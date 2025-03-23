@@ -1,20 +1,27 @@
 const express = require("express")
+const connectDB = require("./config/db");
 const { chats } = require("./data/data");
 const { notfound, errorHandler } = require("./middleware/errorMiddleware");
 const dotenv = require("dotenv");
 const color = require("colors")
-dotenv.config();
-console.log("MongoDB URL:", process.env.MONGO_URL);
-const connectDB = require("./config/db");
-const userRoutes = require("./routes/userRoutes");
-const chatRoutes = require("./routes/chatRoutes")
-const messageRoutes = require("./routes/messageRoutes")
+const path = require("path")
+dotenv.config({ path: "./.env" });
 connectDB();
 const app = express();
 app.use(express.json());
-app.get("/", (req, res) => {
-    res.send("API is Running")
-})
+console.log("MongoDB URL:", process.env.MONGO_URL);
+
+const userRoutes = require("./routes/userRoutes");
+const chatRoutes = require("./routes/chatRoutes")
+const messageRoutes = require("./routes/messageRoutes")
+
+
+console.log("Environment Variables:", process.env);
+console.log("MongoDB URL:", process.env.MONGO_URL);
+console.log("PORT:", process.env.PORT);
+// app.get("/", (req, res) => {
+//     res.send("API is Running")
+// })
 
 
 
@@ -22,9 +29,27 @@ app.use('/api/user', userRoutes);
 app.use('/api/chat', chatRoutes);
 app.use('/api/message', messageRoutes);
 
+// --------------Deployment---------------
+
+const __dirnname1 =  path.resolve();
+if(process.env.NODE_ENV === "production"){
+   app.use(express.static(path.join(__dirnname1,"/fronted/build")));
+
+   app.get("*",(req,res)=>{
+    res.sendFile(path.resolve(__dirnname1,"fronted","build","index.html"))
+   })
+}else{
+    app.get("/",(req,res)=>{
+        res.send("API is running succesfully")
+    });
+}
+
+
+// --------------Deployment---------------
+
 app.use(notfound)
 app.use(errorHandler)
-const PORT = process.env.PORT || 6000;
+const PORT = process.env.PORT;
 const server = app.listen(PORT, console.log(`server is running on port ${PORT}`.yellow.bold));
 
 const io = require("socket.io")(server, {
