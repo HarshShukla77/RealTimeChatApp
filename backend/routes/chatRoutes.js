@@ -10,6 +10,7 @@ router.route("/group").post(protect,createdGroupChat);
 router.route("/rename").put(protect,renameGroup)
 router.route("/remove").put(protect,removeFromGroup);
 router.route("/add").put(protect,addToGroup);
+// router.route("/check").get(protect,CheckGroupChatAlreadyExist)
 
 
 module.exports=router;

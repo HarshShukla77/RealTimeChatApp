@@ -29,6 +29,10 @@ const GroupChatModal = ({ children }) => {
   const toast = useToast();
   const { user, chats, setChats } = ChatState();
 
+
+
+
+  
   const handleSearch = async (query) => {
     setSearch(query);
     if (!query) {
@@ -69,14 +73,24 @@ const GroupChatModal = ({ children }) => {
       return;
     }
 
+    
+
     try {
+
+
+
+
       const config = {
         headers: {
           Authorization: `Bearer ${user.token}`,
         },
       };
 
-      const { data } = await axios.post(
+
+
+
+
+      const {data } = await axios.post(
         "/api/chat/group",
         {
           name: groupChatName,
@@ -84,7 +98,7 @@ const GroupChatModal = ({ children }) => {
         },
         config
       );
-
+      
       setChats([data, ...chats]);
       onClose();
       toast({

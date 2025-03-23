@@ -163,5 +163,27 @@ const removeFromGroup = expressAsyncHandler(async (req, res) => {
         res.json(removedUser);
     }
 });
+// const CheckGroupChatAlreadyExist =  expressAsyncHandler(async(req,res)=>{
+//     const {name} = req.query;
+//     if(!name){
+//         return res.status(400).json({message:"Pleae provide a name"})
+//     }
+//     try{
+//         const existing = await Chat.findOne({name,isGroupChat:true});
+//         if(existing){
+//             return res.status(200).json({
+//                 exists:true,
+//             })
+//         }
+//         else{
+//             return res.status(400).json({
+//                 exists:false
+//             })
+//         }
+//     }
+//     catch(err){
+//         return res.status(500).json({ message: "Server error" });
+//     }
+// })
 
 module.exports = { accessChat, fetchChats, createdGroupChat, renameGroup, addToGroup, removeFromGroup };
